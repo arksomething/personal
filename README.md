@@ -1,117 +1,139 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
-
-(__TODO__: your project name)
-
-# Shoppy Shoperson 
+# Personal Website
 
 ## Overview
 
-(__TODO__: a brief one or two paragraph, high-level description of your project)
+I want to make a personal website for myself. It will exist to host my blog and link to some personal projects I have made or whatever else.
 
-Remembering what to buy at the grocery store is waaaaay too difficult. Also, shopping for groceries when you're hungry leads to regrettable purchases. Sooo... that's where Shoppy Shoperson comes in!
-
-Shoppy Shoperson is a web app that will allow users to keep track of multiple grocery lists. Users can register and login. Once they're logged in, they can create or view their grocery list. For every list that they have, they can add items to the list or cross off items.
-
+The blog will host blogs and comments to blogs. Users will have the ability to create accounts, comment on blogs, and admins will be able to post blogs.
 
 ## Data Model
 
-(__TODO__: a description of your application's data and their relationships to each other) 
+The application will store Users, Posts and Comments in Supabase (PostgreSQL).
 
-The application will store Users, Lists and Items
+**Relationships:**
 
-* users can have multiple lists (via references)
-* each list can have multiple items (by embedding)
+- Users can have one of two roles: `admin` or `commenter`
+- Admins can create posts and comment on posts
+- Commenters can only comment on posts
+- Unauthenticated users can view posts and the landing page
+- Each post belongs to one user (admin)
+- Each comment belongs to one post and one user
+- Posts can have many comments (one-to-many relationship)
 
-(__TODO__: sample documents)
+**Database Tables:**
 
-An Example User:
+A `users` table:
 
-```javascript
-{
-  username: "shannonshopper",
-  hash: // a password hash,
-  lists: // an array of references to List documents
-}
+```sql
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  username VARCHAR(255) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  role VARCHAR(50) DEFAULT 'commenter', -- 'admin' or 'commenter'
+  created_at TIMESTAMP DEFAULT NOW()
+);
 ```
 
-An Example List with Embedded Items:
+A `posts` table:
 
-```javascript
-{
-  user: // a reference to a User object
-  name: "Breakfast foods",
-  items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
-  createdAt: // timestamp
-}
+```sql
+CREATE TABLE posts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  published BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
 ```
 
+A `comments` table:
 
-## [Link to Commented First Draft Schema](db.mjs) 
+```sql
+CREATE TABLE comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
 
-(__TODO__: create a first draft of your Schemas in db.mjs and link to it)
+## [Link to Commented First Draft Schema](db.mjs)
+
+(**TODO**: create a first draft of your Schemas in db.mjs and link to it)
 
 ## Wireframes
 
-(__TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc.)
+**[View Wireframes on Figma →](https://www.figma.com/design/laWMXR37nHJIxCZVlzNPlI/AIT-Final?node-id=0-1&t=MdZ2jsnrYJeEmEAY-1)**
 
-/list/create - page for creating a new shopping list
+/ - about me, project links + homepage
 
-![list create](documentation/list-create.png)
+![index page](documentation/index.png)
 
-/list - page for showing all shopping lists
+/blog - page that lists blog posts (regular user view)
 
-![list](documentation/list.png)
+![blog listing](documentation/blog.png)
 
-/list/slug - page for showing specific shopping list
+/blog (admin view) - page that lists blog posts with admin controls
 
-![list](documentation/list-slug.png)
+![blog admin view](documentation/blog-admin.png)
+
+/blog/create - page for creating a new blog post (admin only)
+
+![create post](documentation/submit-post.png)
+
+/blog/[slug] - page for viewing a blog post
+
+![view post](documentation/post.png)
+
+/blog/[slug]/comment - page for commenting on a blog post
+
+![comment form](documentation/comment.png)
+
+/login - login page
+
+![login page](documentation/login.png)
+
+/register - register page
+
+![register page](documentation/register.png)
 
 ## Site map
 
-(__TODO__: draw out a site map that shows how pages are related to each other)
+**[View Sitemap on Figma →](https://www.figma.com/design/laWMXR37nHJIxCZVlzNPlI/AIT-Final?node-id=0-1&t=MdZ2jsnrYJeEmEAY-1)**
 
-Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia/commons/2/20/Sitemap_google.jpg), but you can create one without the screenshots, drop shadows, etc. ... just names of pages and where they flow to.
+![sitemap](documentation/sitemap.png)
 
 ## User Stories or Use Cases
 
-(__TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://en.wikipedia.org/wiki/Use_case))
-
-1. as non-registered user, I can register a new account with the site
-2. as a user, I can log in to the site
-3. as a user, I can create a new grocery list
-4. as a user, I can view all of the grocery lists I've created in a single list
-5. as a user, I can add items to an existing grocery list
-6. as a user, I can cross off items in an existing grocery list
+1. as an unauthenticated user, I can view the landing page with information about the site and links to my projects
+2. as an unauthenticated user, I can view all published blog posts
+3. as an unauthenticated user, I can read a specific blog post and its comments
+4. as an unauthenticated user, I can register a new account with the site
+5. as a registered user, I can log in to the site
+6. as a registered user (commenter), I can comment on published blog posts
+7. as an admin user, I can create new blog posts
+8. as an admin user, I can publish blog posts
+9. as an admin user, I can comment on blog posts
 
 ## Research Topics
 
-(__TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed)
+- (5 points) Integrate user authentication
+  - I'm going to be using Supabase for user authentication and as my backend, seems like a popular backend, figured I should step out of my confort zone and learn it
+- (6 points) React / Next
+  - used React as the frontend framework; wanted to get better at Next.
 
-* (5 points) Integrate user authentication
-    * I'm going to be using passport for user authentication
-    * And account has been made for testing; I'll email you the password
-    * see <code>cs.nyu.edu/~jversoza/ait-final/register</code> for register page
-    * see <code>cs.nyu.edu/~jversoza/ait-final/login</code> for login page
-* (4 points) Perform client side form validation using a JavaScript library
-    * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-    * if you put in a number that's greater than 5, an error message will appear in the dom
-* (5 points) vue.js
-    * used vue.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
+11 points total out of 10 required points
 
-10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit)
+## [Link to Initial Main Project File](app.mjs)
 
-
-## [Link to Initial Main Project File](app.mjs) 
-
-(__TODO__: create a skeleton Express application with a package.json, app.mjs, views folder, etc. ... and link to your initial app.mjs)
+(**TODO**: create a skeleton Express application with a package.json, app.mjs, views folder, etc. ... and link to your initial app.mjs)
 
 ## Annotations / References Used
 
-(__TODO__: list any tutorials/references/etc. that you've based your code off of)
+(**TODO**: list any tutorials/references/etc. that you've based your code off of)
 
-1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
-2. [tutorial on vue.js](https://vuejs.org/v2/guide/) - (add link to source code that was based on this)
-
+none so far
