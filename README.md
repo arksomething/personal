@@ -122,18 +122,20 @@ CREATE TABLE comments (
 ## Research Topics
 
 - (5 points) Integrate user authentication
-  - I'm going to be using Supabase for user authentication and as my backend, seems like a popular backend, figured I should step out of my confort zone and learn it
+  - I'm going to be using Supabase for user authentication and as my backend, seems like a popular backend, figured I should step out of my confort zone and learn it.
 - (6 points) React / Next
-  - used React as the frontend framework; wanted to get better at Next.
+  - used React as the frontend framework; wanted to get better at Next. Used Next for SSR, using react as a general frontend framework.
 
 11 points total out of 10 required points
 
-## [Link to Initial Main Project File](app.mjs)
+## Project Files
 
-(**TODO**: create a skeleton Express application with a package.json, app.mjs, views folder, etc. ... and link to your initial app.mjs)
+**Frontend (Next.js):** [frontend/app/page.tsx](frontend/app/page.tsx)
+
+**Backend:** [backend/app.mjs](backend/app.mjs)
 
 ## Annotations / References Used
 
-(**TODO**: list any tutorials/references/etc. that you've based your code off of)
-
-none so far
+1. [Supabase Documentation](https://supabase.com/docs)
+2. [Next.js Documentation](https://nextjs.org/docs)
+3. [Supabase Authentication Guide](https://supabase.com/docs/guides/auth)
