@@ -112,3 +112,4 @@ SELECT * FROM pg_policies WHERE schemaname = 'public';
 Check security advisors:
 Use the Supabase dashboard → Database → Advisors
 
+
