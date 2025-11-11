@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { getSiteUrl } from "@/lib/utils";
 import "./globals.css";
 
-const defaultUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ? process.env.NEXT_PUBLIC_SITE_URL
-  : process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const defaultUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
