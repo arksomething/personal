@@ -8,8 +8,17 @@ const defaultUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon16.svg", sizes: "16x16", type: "image/svg+xml" },
+      { url: "/favicon32.svg", sizes: "32x32", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
+  title: "Evan Liu",
+  description: "Evan's personal website",
 };
 
 const geistSans = Geist({

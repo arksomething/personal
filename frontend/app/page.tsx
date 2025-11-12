@@ -8,24 +8,11 @@ export default function Home() {
       <main className="max-w-4xl mx-auto px-6 py-16">
         {/* About Section */}
         <section className="mb-20">
-          <h1 className="text-2xl font-medium mb-8">evan liu</h1>
+          <h1 className="text-2xl font-medium mb-8">Evan Liu</h1>
           <div className="space-y-4 text-muted-foreground">
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-2/5"></div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section>
-          <h2 className="text-2xl font-medium mb-8">projects</h2>
-          <div className="space-y-4">
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-full"></div>
-            <div className="h-4 bg-muted rounded w-full"></div>
+            <p>Hi, I’m Evan Liu. I build apps.</p>
+            <p>I like to build things that quickly get many users - which are currently viral apps.</p>
+            <p>I'm studying finance + CS at NYU. Currently, I'm getting into embedded.</p>
           </div>
         </section>
       </main>
